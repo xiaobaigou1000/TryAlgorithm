@@ -1,21 +1,21 @@
 #pragma once
-#include<deque>
-#include<vector>
-#include<algorithm>
-#include<ostream>
-#include<chrono>
-#include<random>
-#include<iomanip>
-#include<iterator>
-#include<functional>
-#include<numeric>
-#include<future>
+#include <deque>
+#include <vector>
+#include <algorithm>
+#include <ostream>
+#include <chrono>
+#include <random>
+#include <iomanip>
+#include <iterator>
+#include <functional>
+#include <numeric>
+#include <future>
 
-#include"FoolAVL.h"
-#include"SequenceMemoryAVL.h"
+#include "FoolAVL.h"
+#include "SequenceMemoryAVL.h"
 namespace FoolSort
 {
-    template<class DataTraits>
+    template <class DataTraits>
     inline void swapElement(DataTraits a, DataTraits b)
     {
         typename std::iterator_traits<DataTraits>::value_type tmp = *a;
@@ -23,20 +23,33 @@ namespace FoolSort
         *b = tmp;
     }
 
-    template<class Data>
+    template <class Data>
+    std::vector<Data> inplace_AVLSort(std::vector<Data> &toSort)
+    {
+        FoolAVL<Data> sortAVL;
+        for (auto i : toSort)
+        {
+            sortAVL.insert(i);
+        }
+        size_t i = 0;
+        sortAVL.inOrderTraverse([&toSort, &i](auto val) { toSort[i]=val;++i; });
+        return toSort;
+    }
+
+    template <class Data>
     std::vector<Data> AVLSort(std::vector<Data> toSort)
     {
-        SequenceMemoryAVL<Data> sortAVL;
+        FoolAVL<Data> sortAVL;
         for (auto i : toSort)
         {
             sortAVL.insert(i);
         }
         toSort.clear();
-        sortAVL.inOrderTraverse([&toSort](auto i) {toSort.push_back(i); });
+        sortAVL.inOrderTraverse([&toSort](auto i) { toSort.push_back(i); });
         return toSort;
     }
 
-    template<class RandomIte>
+    template <class RandomIte>
     void maxHeapify(RandomIte begin, RandomIte start, RandomIte end)
     {
         auto father = start;
@@ -47,7 +60,7 @@ namespace FoolSort
             {
                 ++son;
             }
-            if (*father > * son)
+            if (*father > *son)
                 return;
             else
             {
@@ -58,7 +71,7 @@ namespace FoolSort
         }
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> heapSort(std::vector<Data> toSort)
     {
         auto begin = toSort.begin();
@@ -68,7 +81,7 @@ namespace FoolSort
         {
             maxHeapify(begin, i, end);
         }
-        for (auto i = end - 1; i != begin;--i)
+        for (auto i = end - 1; i != begin; --i)
         {
             std::iter_swap(begin, i);
             maxHeapify(begin, begin, i);
@@ -76,8 +89,8 @@ namespace FoolSort
         return std::move(toSort);
     }
 
-    template<class Data>
-    void inplace_heapSort(std::vector<Data>& toSort)
+    template <class Data>
+    void inplace_heapSort(std::vector<Data> &toSort)
     {
         auto begin = toSort.begin();
         auto end = toSort.end();
@@ -93,7 +106,7 @@ namespace FoolSort
         }
     }
 
-    template<class RandomIte>
+    template <class RandomIte>
     RandomIte quicksortPartion(RandomIte low, RandomIte high)
     {
         auto leftPointer = low;
@@ -115,7 +128,7 @@ namespace FoolSort
         return rightPointer;
     }
 
-    template<class RandomIte>
+    template <class RandomIte>
     void quickSortSub(RandomIte low, RandomIte high)
     {
         if (high <= low)
@@ -125,39 +138,21 @@ namespace FoolSort
         quickSortSub(partionPoint + 1, high);
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> quickSort(std::vector<Data> toSort)
     {
         quickSortSub(toSort.begin(), toSort.end() - 1);
         return std::move(toSort);
     }
 
-    template<class Data>
-    void inplace_quickSort(std::vector<Data>& toSort)
+    template <class Data>
+    void inplace_quickSort(std::vector<Data> &toSort)
     {
         quickSortSub(toSort.begin(), toSort.end() - 1);
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> bubbleSort(std::vector<Data> toSort)
-    {
-        auto begin = std::begin(toSort);
-        auto beforEnd = std::end(toSort) - 1;
-        for (auto i = begin; i != beforEnd; i++)
-        {
-            for (auto j = begin; j != begin+(beforEnd-i); ++j)
-            {
-                if (*j > * (j + 1))
-                {
-                    std::iter_swap(j, j + 1);
-                }
-            }
-        }
-        return std::move(toSort);
-    }
-
-    template<class Data>
-    void inplace_bubbleSort(std::vector<Data>& toSort)
     {
         auto begin = std::begin(toSort);
         auto beforEnd = std::end(toSort) - 1;
@@ -165,7 +160,25 @@ namespace FoolSort
         {
             for (auto j = begin; j != begin + (beforEnd - i); ++j)
             {
-                if (*j > * (j + 1))
+                if (*j > *(j + 1))
+                {
+                    std::iter_swap(j, j + 1);
+                }
+            }
+        }
+        return std::move(toSort);
+    }
+
+    template <class Data>
+    void inplace_bubbleSort(std::vector<Data> &toSort)
+    {
+        auto begin = std::begin(toSort);
+        auto beforEnd = std::end(toSort) - 1;
+        for (auto i = begin; i != beforEnd; i++)
+        {
+            for (auto j = begin; j != begin + (beforEnd - i); ++j)
+            {
+                if (*j > *(j + 1))
                 {
                     std::iter_swap(j, j + 1);
                 }
@@ -173,7 +186,7 @@ namespace FoolSort
         }
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> simpleSelectSort(std::vector<Data> toSort)
     {
         auto begin = toSort.begin();
@@ -187,7 +200,7 @@ namespace FoolSort
         return std::move(toSort);
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> insertSort(std::vector<Data> toSort)
     {
         toSort.push_back(Data());
@@ -198,7 +211,7 @@ namespace FoolSort
         for (auto i = reverseBegin + 2; i != reverseEnd; ++i)
         {
             *backSentry = *i;
-            for (auto j = i; *j > * (j - 1); --j)
+            for (auto j = i; *j > *(j - 1); --j)
             {
                 std::iter_swap(j, j - 1);
             }
@@ -207,8 +220,8 @@ namespace FoolSort
         return std::move(toSort);
     }
 
-    template<typename Data>
-    void inplace_insert_sort(std::vector<Data>& toSort)
+    template <typename Data>
+    void inplace_insert_sort(std::vector<Data> &toSort)
     {
         toSort.push_back(Data());
         auto backSentry = std::rbegin(toSort);
@@ -218,7 +231,7 @@ namespace FoolSort
         for (auto i = reverseBegin + 2; i != reverseEnd; ++i)
         {
             *backSentry = *i;
-            for (auto j = i; *j > * (j - 1); --j)
+            for (auto j = i; *j > *(j - 1); --j)
             {
                 std::iter_swap(j, j - 1);
             }
@@ -226,7 +239,7 @@ namespace FoolSort
         toSort.pop_back();
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> binaryInsertionSort(std::vector<Data> toSort)
     {
         toSort.push_back(Data());
@@ -257,8 +270,8 @@ namespace FoolSort
         return std::move(toSort);
     }
 
-    template<class Data>
-    void inplace_binaryInsertionSort(std::vector<Data>& toSort)
+    template <class Data>
+    void inplace_binaryInsertionSort(std::vector<Data> &toSort)
     {
         toSort.push_back(Data());
         auto backSentry = std::rbegin(toSort);
@@ -287,7 +300,7 @@ namespace FoolSort
         toSort.pop_back();
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> shellSort(std::vector<Data> toSort)
     {
         auto begin = std::begin(toSort);
@@ -309,8 +322,8 @@ namespace FoolSort
         return std::move(toSort);
     }
 
-    template<class Data>
-    void inplace_shellSort(std::vector<Data>& toSort)
+    template <class Data>
+    void inplace_shellSort(std::vector<Data> &toSort)
     {
         auto begin = std::begin(toSort);
         auto end = std::end(toSort);
@@ -330,7 +343,7 @@ namespace FoolSort
         }
     }
 
-    template<class RandomIte>
+    template <class RandomIte>
     inline void mergeSub(RandomIte low, RandomIte middle, RandomIte high, RandomIte tempArrayBeginPosition)
     {
         std::copy(low, high, tempArrayBeginPosition);
@@ -359,7 +372,7 @@ namespace FoolSort
         }
     }
 
-    template<class RandomIte>
+    template <class RandomIte>
     void mergeSortSub(RandomIte low, RandomIte high, RandomIte tempArrayBeginPosition)
     {
         if ((high - 1) == low)
@@ -370,7 +383,7 @@ namespace FoolSort
         mergeSub(low, middle, high, tempArrayBeginPosition);
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> mergeSort(std::vector<Data> toSort)
     {
         auto begin = std::begin(toSort);
@@ -381,8 +394,8 @@ namespace FoolSort
         return std::move(toSort);
     }
 
-    template<class Data>
-    void inplace_mergeSort(std::vector<Data>& toSort)
+    template <class Data>
+    void inplace_mergeSort(std::vector<Data> &toSort)
     {
         auto begin = std::begin(toSort);
         auto end = std::end(toSort);
@@ -391,7 +404,7 @@ namespace FoolSort
         mergeSortSub(std::begin(toSort), std::end(toSort), std::begin(tempArray));
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> spawnOriginData(long long size)
     {
         std::default_random_engine dre(std::chrono::system_clock::now().time_since_epoch().count());
@@ -404,8 +417,8 @@ namespace FoolSort
         return std::move(ret);
     }
 
-    template<class Data>
-    std::ostream& operator<<(std::ostream& out, std::vector<Data> toPrint)
+    template <class Data>
+    std::ostream &operator<<(std::ostream &out, std::vector<Data> toPrint)
     {
         for (int i = 0; i < 100; ++i)
         {
@@ -418,21 +431,21 @@ namespace FoolSort
         return out;
     }
 
-    template<class Data>
+    template <class Data>
     std::vector<Data> getReferenceSortedArray(std::vector<Data> input)
     {
         std::sort(std::begin(input), std::end(input));
         return std::move(input);
     }
 
-    std::chrono::duration<double,std::nano> sortTimeCaculation(std::vector<int>(*sortFunction)(std::vector<int>), const std::vector<int>& toSort, std::vector<int>& sorted)
+    std::chrono::duration<double, std::nano> sortTimeCaculation(std::vector<int> (*sortFunction)(std::vector<int>), const std::vector<int> &toSort, std::vector<int> &sorted)
     {
         std::vector<std::future<std::chrono::steady_clock::duration>> algorithmTests;
         std::vector<std::chrono::steady_clock::duration> testTimes;
         std::chrono::high_resolution_clock hrc;
         auto beforSort = hrc.now();
 
-        auto algorithmTimer = [&hrc, &toSort,sortFunction]() {
+        auto algorithmTimer = [&hrc, &toSort, sortFunction]() {
             auto beforSort = hrc.now();
             sortFunction(toSort);
             return hrc.now() - beforSort;
@@ -443,7 +456,7 @@ namespace FoolSort
             algorithmTests.push_back(std::async(algorithmTimer));
         }
         sorted = sortFunction(toSort);
-        for (auto& i : algorithmTests)
+        for (auto &i : algorithmTests)
         {
             testTimes.push_back(i.get());
         }
@@ -456,7 +469,7 @@ namespace FoolSort
         {
             algorithmTests.push_back(std::async(algorithmTimer));
         }
-        for (auto& i : algorithmTests)
+        for (auto &i : algorithmTests)
         {
             testTimes.push_back(i.get());
         }
@@ -466,7 +479,7 @@ namespace FoolSort
         return actualTime;
     }
 
-    void sortFunctionTestAndEfficiencyComparison(std::ostream& out, long long sampleSize, std::vector<int>(*sortFunction)(std::vector<int>))
+    void sortFunctionTestAndEfficiencyComparison(std::ostream &out, long long sampleSize, std::vector<int> (*sortFunction)(std::vector<int>))
     {
         auto toSort = spawnOriginData<int>(sampleSize);
         std::chrono::high_resolution_clock hrc;
@@ -492,4 +505,4 @@ namespace FoolSort
         out << sorted << "\n\n";
         out << "average time used in user defined sort function: " << (long long)averageAlgorithmTime.count() << " ns.\n\n";
     }
-}
+} // namespace FoolSort

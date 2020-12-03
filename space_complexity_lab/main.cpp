@@ -3,12 +3,8 @@
 
 int main()
 {
-    calculateSpaceComplexity(50000, 10000, 200, 1, "hello.txt", FoolSort::AVLSort<size_t>);
-
-    std::vector<uint32_t> hello{10000000};
-
-    HANDLE currentProcessHandle = GetCurrentProcess();
-    PROCESS_MEMORY_COUNTERS initialMemoryUsage;
-    GetProcessMemoryInfo(currentProcessHandle, &initialMemoryUsage, sizeof(initialMemoryUsage));
-    spdlog::info("current process memory usage: {} bytes", initialMemoryUsage.WorkingSetSize);
+    // calculateSpaceComplexity(50000, 5000, 60, 1, "pre", FoolSort::inplace_AVLSort<size_t>);
+    // calculateSpaceComplexity(500000, 50000, 60, 1, "avl_sc", FoolSort::inplace_AVLSort<size_t>);
+    // calculateSpaceComplexity(500000, 50000, 60, 1, "quick_sc", FoolSort::inplace_quickSort<size_t>);
+    calculateSpaceComplexity(500000, 50000, 60, 1, "merge_sc", FoolSort::inplace_mergeSort<size_t>);
 }
