@@ -4,5 +4,7 @@ project(Examples)
 add_executable(NQueenExample n_queen_ex.cpp)
 target_link_libraries(NQueenExample PRIVATE NQueen ComplexityBenchmarkUtil)
 
-add_executable(Fuck big_int_test.cpp)
-target_link_libraries(Fuck PRIVATE BigDecimalMultiplication ComplexityBenchmarkUtil)
+add_executable(BigDecimalMultiplicationTest big_int_test.cpp)
+target_link_libraries(BigDecimalMultiplicationTest PRIVATE BigDecimalMultiplication ComplexityBenchmarkUtil)
+
+add_executable(Kruskal kruskal.cpp)
