@@ -6,7 +6,9 @@
 #include <mutex>
 #include <thread>
 #include <fstream>
-#include<chrono>
+#include <chrono>
+#include <numeric>
+#include <algorithm>
 
 class MemoryMesurement
 {
@@ -85,7 +87,9 @@ void calculateSpaceComplexity(const size_t InitialDatasetSize, const size_t step
         {
             spdlog::info("current dataset size: {}, iteration time: {}", currentSize, j + 1);
             func(rawArray);
-            std::random_shuffle(rawArray.begin(), rawArray.end());
+            std::random_device rd;
+            std::mt19937_64 g(rd());
+            std::shuffle(rawArray.begin(), rawArray.end(), g);
         }
 
         mm.stop();

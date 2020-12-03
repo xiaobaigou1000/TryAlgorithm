@@ -1,1 +1,21 @@
 cmake_minimum_required(VERSION 3.12)
+
+add_executable(BigDecimalMultiplicationTest big_decimal_multiplication_test.cpp)
+target_link_libraries(BigDecimalMultiplicationTest PRIVATE BigDecimalMultiplication)
+add_test(BigDecimalMultiplicationTest BigDecimalMultiplicationTest)
+
+add_executable(CalculateConvexTest calculate_convex_test.cpp)
+target_link_libraries(CalculateConvexTest PRIVATE CalculateConvex)
+add_test(CalculateConvexTest CalculateConvexTest)
+
+add_executable(FindLISTest find_lis_test.cpp)
+target_link_libraries(FindLISTest PRIVATE StringDP)
+add_test(FindLISTest FindLISTest)
+
+add_executable(FindLCSTest find_lcs_test.cpp)
+target_link_libraries(FindLCSTest PRIVATE StringDP)
+add_test(FindLCSTest FindLCSTest)
+
+add_executable(ZeroOneBackpackTest zero_one_backpack_test.cpp)
+target_link_libraries(ZeroOneBackpackTest PRIVATE ZeroOneBackpack)
+add_test(ZeroOneBackpackTest ZeroOneBackpackTest)
