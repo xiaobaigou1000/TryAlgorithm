@@ -14,6 +14,9 @@ add_subdirectory(calculate_convex)
 add_subdirectory(sequence_dp)
 add_subdirectory(zero_one_backpack)
 add_subdirectory(complexity_benchmark_util)
+add_subdirectory(n_queen)
+
+add_subdirectory(examples)
 
 add_subdirectory(space_complexity_lab)
 
