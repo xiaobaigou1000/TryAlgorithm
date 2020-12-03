@@ -3,7 +3,7 @@
 
 int main()
 {
-    NQueen n_queen;
+    NQueen n_queen{30};
     bool result = n_queen.calculate();
     auto board = n_queen.getBoardCopy();
     for (auto row : board)

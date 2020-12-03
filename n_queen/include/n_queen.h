@@ -4,7 +4,7 @@
 class NQueen
 {
 public:
-    NQueen() : board(boardSize, std::vector<int32_t>(boardSize, 0)) {}
+    NQueen(int64_t boardSize = 8) : boardSize(boardSize), board(boardSize, std::vector<int32_t>(boardSize, 0)) {}
 
     bool calculate()
     {
@@ -44,7 +44,7 @@ public:
 
 private:
     std::vector<std::vector<int32_t>> board;
-    static constexpr int64_t boardSize = 8;
+    int64_t boardSize;
     bool checkValid(int64_t row, int64_t col)
     {
         bool val = true;
